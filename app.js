@@ -24,8 +24,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/',(req,res)=>{
-  res.send("working");
-});
+  res.send("heroku deployed succesfully!!")
+})
 
 // app.use('db',db);
 app.use('/', indexRouter);
