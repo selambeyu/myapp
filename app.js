@@ -28,7 +28,7 @@ app.get('/',(req,res)=>{
 })
 
 // app.use('db',db);
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
