@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var verifyToken=require('../midelware/verifytoken');
 var UserController=require('../controller/user')
 
 /* GET users listing. */

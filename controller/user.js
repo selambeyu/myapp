@@ -1,4 +1,5 @@
 const User=require('../models/user');
+const bcrypt=require('b')
 
 
 
@@ -9,8 +10,10 @@ module.exports.register=(req,res)=>{
         password:req.body.password,
         age:req.body.age
     })
-
-    user.save()
+    bcrypt.hash(user.password,10,(err,hash)=>{
+        if(err)throw err;
+        user.password=hash;
+        user.save()
     .then(user=>{
         res.json({
             user:user
@@ -19,6 +22,31 @@ module.exports.register=(req,res)=>{
         res.json({
             user:err,
             message:"error occured"
+        })
+    })
+    })
+
+    
+}
+
+
+module.exports.login=(req,res)=>{
+    User.findOne({username:req.body.username}).then(user=>{
+        bcrypt.compare(req.body.password,user.password,(isMatch)=>{
+            if(isMatch){
+                const token=jwt.sign({user:user},"sercret",{expiresIn:604500});
+                return res.json({
+                    token:token,
+                    success:true,
+                    message:"user Logged in"
+                })
+            }
+        })
+          
+        
+    }).catch(err=>{
+        res.json({
+            user:err
         })
     })
 }
@@ -78,3 +106,5 @@ module.exports.deleteUser=(req,res)=>{
         })
     })
 }
+
+
